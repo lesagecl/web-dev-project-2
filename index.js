@@ -1,5 +1,4 @@
 const express = require('express');
-// const fetch = require('node-fetch');
 
 const service = express();
 
@@ -57,15 +56,5 @@ service.post('/schedules', (request, response) => {
     // issue insert statement...
 });
 
-// client i think?
-// fetch('http://localhost:5000/all')
-// .then(assertResponse)
-// .then(response => response.json())
-// .then(data => {
-//     if (data.ok) {
-//       console.log(data);
-//     }
-// }).
-// catch(error => console.error(error));
 
 connection.end();
