@@ -3,9 +3,6 @@ const express = require('express');
 
 const service = express();
 
-
-const array = [1, 2, 4, 8, 16, 32, 64, 128, 256, 512];
-
 const port = 5000;
 service.listen(port, () => {
     console.log(`We're live on port ${port}!`);
@@ -36,8 +33,6 @@ connection.query(selectQuery, (error, rows) => {
   }
 });
 
-connection.end();
-
 // permissions
 service.options('*', (request, response) => {
     response.set('Access-Control-Allow-Headers', 'Content-Type');
@@ -46,19 +41,20 @@ service.options('*', (request, response) => {
   });
 
 // TODO: define endpoints
+// CRUD: create, read, update, delete
+// update: PATCH
 service.get('/all', (request, response) => {
     response.json({
         ok: true,
         result: array,
       });
 });
+service.get('/report.html', (request, response) => {
+    // from the file reading
+});
 
-service.get('/one/:index', (request, response) => {
-    const index = parseInt(request.params.index);
-    response.json({
-      ok: true,
-      result: array[index],
-    });
+service.post('/schedules', (request, response) => {
+    // issue insert statement...
 });
 
 // client i think?
@@ -71,3 +67,5 @@ service.get('/one/:index', (request, response) => {
 //     }
 // }).
 // catch(error => console.error(error));
+
+connection.end();
