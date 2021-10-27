@@ -3,7 +3,7 @@ const service = express();
 
 const port = 5001;
 service.listen(port, () => {
-    console.log(`We're live on port ${port}!`);
+  console.log(`We're live on port ${port}!`);
 });
 
 // permissions
@@ -36,15 +36,23 @@ function rowToMemory(row) {
     week_day: row.week_day
   };
 }
+const insertQuery = 'INSERT INTO schedule(id, start_time, end_time, week_day) VALUES (?, ?, ?, ?)';
+const parameters = [1383478, '13:30', '15:00', 'Monday'];
+connection.query(insertQuery, parameters, (error, result) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log(result);
+  }
+});
 
-// TODO: issue queries
 const selectQuery = 'SELECT * FROM schedule';
 connection.query(selectQuery, (error, rows) => {
   if (error) {
     console.error(error);
   } else {
-    const schedules = rows.map(rowToMemory);
-    console.log(schedules);
+    const schedule = rows.map(rowToMemory);
+    console.log(schedule);
   }
 });
 
@@ -52,7 +60,29 @@ connection.query(selectQuery, (error, rows) => {
 // CRUD: create, read, update, delete
 // update: PATCH
 
-// schedule for a given day
+/* SELECT ENDPOINTS */
+
+// get schedule for the week
+service.get('/schedule', (request, response) => {
+  const query = 'SELECT * FROM schedule WHERE is_deleted = 0';
+  connection.query(query, (error, rows) => {
+    if (error) {
+      response.status(500);
+      response.json({
+        ok: false,
+        results: error.message,
+      });
+    } else {
+      const schedule = rows.map(rowToMemory);
+      response.json({
+        ok: true,
+        results: rows.map(rowToMemory),
+      });
+    }
+  });
+});
+
+// get schedule for a given day
 service.get('/schedule/:week_day', (request, response) => {
   const parameter = [request.params.week_day];
   const query = 'SELECT * FROM schedule WHERE week_day = ? AND is_deleted = 0';
@@ -64,7 +94,7 @@ service.get('/schedule/:week_day', (request, response) => {
         results: error.message,
       });
     } else {
-      const schedules = rows.map(rowToMemory);
+      const schedule = rows.map(rowToMemory);
       response.json({
         ok: true,
         results: rows.map(rowToMemory),
@@ -73,7 +103,7 @@ service.get('/schedule/:week_day', (request, response) => {
   });
 });
 
-// schedule for a certain id
+// get schedule for a certain id
 service.get('/schedule/:id', (request, response) => {
   const parameter = [parseInt(request.params.id)];
   const query = 'SELECT * FROM schedule WHERE id = ? AND is_deleted = 0';
@@ -85,7 +115,7 @@ service.get('/schedule/:id', (request, response) => {
         results: error.message,
       });
     } else {
-      const schedules = rows.map(rowToMemory);
+      const schedule = rows.map(rowToMemory);
       response.json({
         ok: true,
         results: rows.map(rowToMemory),
@@ -94,7 +124,7 @@ service.get('/schedule/:id', (request, response) => {
   });
 });
 
-// schedule for a certain id and day
+// get schedule for a certain id and day
 service.get('/schedule/:id/:week_day', (request, response) => {
   const parameters = [
     parseInt(request.params.id),
@@ -109,7 +139,7 @@ service.get('/schedule/:id/:week_day', (request, response) => {
         results: error.message,
       });
     } else {
-      const schedules = rows.map(rowToMemory);
+      const schedule = rows.map(rowToMemory);
       response.json({
         ok: true,
         results: rows.map(rowToMemory),
@@ -118,17 +148,106 @@ service.get('/schedule/:id/:week_day', (request, response) => {
   });
 });
 
-service.post('/schedules', (request, response) => {
-    // issue insert statement...
-});
-
-// for access to report.html
+// get access to report.html
 service.get('/report.html', (request, response) => {
   res.sendFile('report.html', options, function (err) {
     if (err) {
-        next(err);
+      next(err);
     } else {
-        console.log('Sent:', fileName);
+      console.log('Sent:', fileName);
+    }
+  });
+});
+
+/* INSERT ENDPOINTS */
+
+// create a new schedule entry
+service.post('/schedule', (request, response) => {
+  if (request.body.hasOwnProperty('id') &&
+    request.body.hasOwnProperty('start_time') &&
+    request.body.hasOwnProperty('end_time') &&
+    request.body.hasOwnProperty('week_day')) {
+
+    const parameters = [
+      request.body.id,
+      request.body.start_time,
+      request.body.end_time,
+      request.body.week_day,
+    ];
+    const query = 'INSERT INTO schedule(id, start_time, end_time, week_day) VALUES (?, ?, ?, ?)';
+    connection.query(query, parameters, (error, result) => {
+      if (error) {
+        response.status(500);
+        response.json({
+          ok: false,
+          results: error.message,
+        });
+      } else {
+        response.json({
+          ok: true,
+          results: result.insertId,
+        });
+      }
+    });
+  } else {
+    response.status(400);
+    response.json({
+      ok: false,
+      results: 'Incomplete memory.',
+    });
+  }
+});
+
+/* UPDATE ENDPOINTS */
+
+// edit a specific user's schedule for a specific day
+service.patch('/schedule/:id/:week_day', (request, response) => {
+  const parameters = [
+    request.body.id,
+    request.body.start_time,
+    request.body.end_time,
+    request.body.week_day,
+    parseInt(request.params.id),
+    request.params.week_day
+  ];
+
+  const query = 'UPDATE schedule SET id = ?, start_time = ?, end_time = ?, week_day = ? WHERE id = ? AND week_day = ?';
+  connection.query(query, parameters, (error, result) => {
+    if (error) {
+      response.status(404);
+      response.json({
+        ok: false,
+        results: error.message,
+      });
+    } else {
+      response.json({
+        ok: true,
+      });
+    }
+  });
+});
+
+/* DELETE ENDPOINTS */
+
+// delete schedule record
+service.delete('/schedule/:id/:week_day', (request, response) => {
+  const parameters = [
+    parseInt(request.params.id),
+    request.params.week_day
+  ];
+
+  const query = 'UPDATE schedule SET is_deleted = 1 WHERE id = ? AND week_day = ?';
+  connection.query(query, parameters, (error, result) => {
+    if (error) {
+      response.status(404);
+      response.json({
+        ok: false,
+        results: error.message,
+      });
+    } else {
+      response.json({
+        ok: true,
+      });
     }
   });
 });
