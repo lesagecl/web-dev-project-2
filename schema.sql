@@ -7,3 +7,5 @@ CREATE TABLE schedule (
     week_day VARCHAR(10),
     is_deleted INT DEFAULT 0
 );
+
+INSERT INTO schedule (id, start_time, end_time, week_day, is_deleted) VALUES ('9876', '14:00', '17:30', 'Wednesday', 0);
