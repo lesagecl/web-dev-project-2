@@ -34,7 +34,8 @@ function rowToMemory(row) {
     id: row.id,
     start_time: row.start_time,
     end_time: row.end_time,
-    week_day: row.week_day
+    week_day: row.week_day,
+    is_deleted: row.is_deleted
   };
 }
 
