@@ -56,10 +56,6 @@ connection.query(selectQuery, (error, rows) => {
   }
 });
 
-// TODO: define endpoints
-// CRUD: create, read, update, delete
-// update: PATCH
-
 /* SELECT ENDPOINTS */
 
 // get schedule for the week
@@ -150,20 +146,14 @@ service.get('/schedule/:id/:week_day', (request, response) => {
 
 // get access to report.html
 service.get('/report.html', (request, response) => {
-  res.sendFile('report.html', options, function (err) {
-    if (err) {
-      next(err);
-    } else {
-      console.log('Sent:', fileName);
-    }
-  });
+  response.sendFile('report.html');
 });
 
 /* INSERT ENDPOINTS */
 
 // create a new schedule entry
 service.post('/schedule', (request, response) => {
-  if (request.body.hasOwnProperty('id') &&
+  if (request.body.hasOwnProperty('id') && // error
     request.body.hasOwnProperty('start_time') &&
     request.body.hasOwnProperty('end_time') &&
     request.body.hasOwnProperty('week_day')) {

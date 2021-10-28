@@ -19,8 +19,14 @@
         <li><b>WIP: This page is accessed by appending /report.html</b></li>
     </ol>
     To test my endpoints:
-    <br><br>
-    curl --header 'Content-Type: application/json' \<br>
-    --data '{"id": 1383478, "start_time": "8:00", "end_time": "10:45", "week_day": "Tuesday"}' \<br>
-    https://project2.le-sage.me:8443/schedule<br>
+    <br>
+    <br>For SELECT:<br>
+    curl https://project2.le-sage.me:8443/1383478/Monday
+    <br>For INSERT:<br>
+    curl --header 'Content-Type: application/json' \
+    --data '{"id": 1383478, "start_time": "8:00", "end_time": "10:45", "week_day": "Tuesday"}' \
+    https://project2.le-sage.me:8443/schedule
+    <br>For UPDATE:<br>
+
+    <br>
 </html>
