@@ -27,6 +27,9 @@
     <br>For SELECT:<br>
     curl https://project2.le-sage.me:8443/schedule/Jane/Tuesday
     <br>For UPDATE:<br>
-
+    curl --header 'Content-Type: application/json' \
+    --request PATCH \
+    --data '{"user": "Jane", "start_time": "8:15", "end_time": "11:00", "week_day": "Tuesday", "is_deleted": 0}' \
+    https://project2.le-sage.me:8443/schedule/Jane/Tuesday
     <br>For DELETE:<br>
 </html>

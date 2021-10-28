@@ -186,7 +186,7 @@ service.patch('/schedule/:user/:week_day', (request, response) => {
     request.body.is_deleted
   ];
 
-  const query = 'UPDATE schedule SET user = ?, start_time = ?, end_time = ?, week_day = ? WHERE user = ? AND week_day = ? AND is_deleted = ?';
+  const query = 'UPDATE schedule SET user = ?, start_time = ?, end_time = ?, week_day = ? WHERE user = ? AND week_day = ? AND is_deleted = 0 ';
   connection.query(query, parameters, (error, result) => {
     if (error) {
       response.status(404);
