@@ -6,9 +6,9 @@
         <li>This project is using MySql to store long-term data</li>
         <li>This project is using Express</li>
         <li>My project is available at https://project2.le-sage.me:8443/</li>
-        <li><b>WIP: endpoints & parameters</b></li>
-        <li><b>WIP: send and receive complex data as JSON</b></li>
-        <li><b>WIP: CRUD operations must be supported</b></li>
+        <li>All endpoints and parameters are approriately named</li>
+        <li>All data sent and received are complex JSON data</b></li>
+        <li><b>WIP: All operations (except update :(( ) are supported</b></li>
         <li>The firewall is active and enabled on system startup. All ports are blocked except for 22, 80, 443, and 8443</li>
         <li>Nginx server supports this web service</li>
         <li>My web service uses custom middleware and an options wildcard endpoint</li>
@@ -29,7 +29,9 @@
     <br>For UPDATE:<br>
     curl --header 'Content-Type: application/json' \
     --request PATCH \
-    --data '{"first_name": "Jane", "start_time": "8:15", "end_time": "11:00", "week_day": "Tuesday", "is_deleted": 0}' \
+    --data '{"first_name": "Jane", "start_time": "8:15", "end_time": "11:00", "week_day": "Tuesday"}' \
     https://project2.le-sage.me:8443/schedule/Jane/Tuesday
     <br>For DELETE:<br>
+    curl --request DELETE \
+  https://project2.le-sage.me:8443/schedule/Jane/Tuesday
 </html>

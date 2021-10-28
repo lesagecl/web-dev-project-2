@@ -183,7 +183,8 @@ service.patch('/schedule/:first_name/:week_day', (request, response) => {
     request.body.start_time,
     request.body.end_time,
     request.body.week_day,
-    request.body.is_deleted
+    request.params.first_name,
+    request.params.week_day
   ];
 
   const query = 'UPDATE schedule SET first_name = ?, start_time = ?, end_time = ?, week_day = ? WHERE first_name = ? AND week_day = ? AND is_deleted = 0';
