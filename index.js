@@ -146,7 +146,7 @@ service.get('/schedule/:id/:week_day', (request, response) => {
 
 // get access to report.html
 service.get('/report.html', (request, response) => {
-  response.sendFile('report.html');
+  response.sendFile('/Users/chelsea/Desktop/Project-2/report.html');
 });
 
 /* INSERT ENDPOINTS */
