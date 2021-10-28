@@ -32,7 +32,7 @@ connection.connect(error => {
 function rowToMemory(row) {
   return {
     id: row.id,
-    user: row.user,
+    first_name: row.first_name,
     start_time: row.start_time,
     end_time: row.end_time,
     week_day: row.week_day,
@@ -84,9 +84,9 @@ service.get('/schedule/:week_day', (request, response) => {
 });
 
 // get schedule for a certain user
-service.get('/schedule/:user', (request, response) => {
-  const parameter = [request.params.user];
-  const query = 'SELECT * FROM schedule WHERE user = ? AND is_deleted = 0';
+service.get('/schedule/:first_name', (request, response) => {
+  const parameter = [request.params.first_name];
+  const query = 'SELECT * FROM schedule WHERE first_name = ? AND is_deleted = 0';
   connection.query(query, parameter, (error, rows) => {
     if (error) {
       response.status(500);
@@ -105,12 +105,12 @@ service.get('/schedule/:user', (request, response) => {
 });
 
 // get schedule for a certain user and day
-service.get('/schedule/:user/:week_day', (request, response) => {
+service.get('/schedule/:first_name/:week_day', (request, response) => {
   const parameters = [
-    request.params.user,
+    request.params.first_name,
     request.params.week_day
   ];
-  const query = 'SELECT * FROM schedule WHERE user = ? AND week_day = ? AND is_deleted = 0';
+  const query = 'SELECT * FROM schedule WHERE first_name = ? AND week_day = ? AND is_deleted = 0';
   connection.query(query, parameters, (error, rows) => {
     if (error) {
       response.status(500);
@@ -137,20 +137,20 @@ service.get('/report.html', (request, response) => {
 
 // create a new schedule entry
 service.post('/schedule', (request, response) => {
-  if (request.body.hasOwnProperty('user') &&
+  if (request.body.hasOwnProperty('first_name') &&
     request.body.hasOwnProperty('start_time') &&
     request.body.hasOwnProperty('end_time') &&
     request.body.hasOwnProperty('week_day') &&
     request.body.hasOwnProperty('is_deleted')) {
 
     const parameters = [
-      request.body.user,
+      request.body.first_name,
       request.body.start_time,
       request.body.end_time,
       request.body.week_day,
       request.body.is_deleted
     ];
-    const query = 'INSERT INTO schedule(user, start_time, end_time, week_day, is_deleted) VALUES (?, ?, ?, ?, ?)';
+    const query = 'INSERT INTO schedule(first_name, start_time, end_time, week_day, is_deleted) VALUES (?, ?, ?, ?, ?)';
     connection.query(query, parameters, (error, result) => {
       if (error) {
         response.status(500);
@@ -177,16 +177,16 @@ service.post('/schedule', (request, response) => {
 /* UPDATE ENDPOINTS */
 
 // edit a specific user's schedule for a specific day
-service.patch('/schedule/:user/:week_day', (request, response) => {
+service.patch('/schedule/:first_name/:week_day', (request, response) => {
   const parameters = [
-    request.body.user,
+    request.body.first_name,
     request.body.start_time,
     request.body.end_time,
     request.body.week_day,
     request.body.is_deleted
   ];
 
-  const query = 'UPDATE schedule SET user = ?, start_time = ?, end_time = ?, week_day = ? WHERE user = ? AND week_day = ? AND is_deleted = 0 ';
+  const query = 'UPDATE schedule SET first_name = ?, start_time = ?, end_time = ?, week_day = ? WHERE first_name = ? AND week_day = ? AND is_deleted = 0';
   connection.query(query, parameters, (error, result) => {
     if (error) {
       response.status(404);
@@ -205,13 +205,13 @@ service.patch('/schedule/:user/:week_day', (request, response) => {
 /* DELETE ENDPOINTS */
 
 // delete schedule record
-service.delete('/schedule/:user/:week_day', (request, response) => {
+service.delete('/schedule/:first_name/:week_day', (request, response) => {
   const parameters = [
-    request.params.user,
+    request.params.first_name,
     request.params.week_day
   ];
 
-  const query = 'UPDATE schedule SET is_deleted = 1 WHERE user = ? AND week_day = ?';
+  const query = 'UPDATE schedule SET is_deleted = 1 WHERE first_name = ? AND week_day = ?';
   connection.query(query, parameters, (error, result) => {
     if (error) {
       response.status(404);
