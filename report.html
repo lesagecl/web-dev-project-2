@@ -15,26 +15,26 @@ Project 2 Requirements:
     <li>My web service uses custom middleware and an options wildcard endpoint</li>
     <li>My web service is running via pm2</li>
     <li>I have sent you my GitHub repository through direct message in Slack</li>
-    <li>Database and schema are included in the repo; credentials.json and <b>WIP: any passwords are not included</b>
-    </li>
+    <li>Database and schema are included in the repo; password is in a credentials.json file not in the repo</li>
     <li>Progress on my Git repo starts October 25</li>
     <li>This page is accessed by appending /report.html</li>
 </ol>
 This web server works similarly to When2Meet. Each databse entry has a unique id, as well as a first_name, start_time,
-end_time, week_day, and is_deleted. The idea is that a user will add to the database the times that they are busy and
-their friends are able to see these times, too.<br><br>
-Currently, the database (named 'schedule') contains: <code>{"id":1,"first_name":"John","start_time":"14:00:00","end_time":"17:30:00","week_day":"Wednesday","is_deleted":0}</code><br>
+end_time, week_day, and is_deleted. The idea is that a user will add to the database the times that they are busy
+and their friends are able to see these times, too.<br><br>
+Currently, the database (named 'schedule') contains:
+<code>{"id":1,"first_name":"John","start_time":"14:00:00","end_time":"17:30:00","week_day":"Wednesday","is_deleted":0}</code><br>
 This web server has insert, update, patch and delete endpoints. To test my endpoints:<br>
 <br>For INSERT, add to the schedule database like this:<br>
 <code>curl --header 'Content-Type: application/json' \</code><br>
 <code>--data '{"first_name": "Jane", "start_time": "8:00", "end_time": "10:45", "week_day": "Tuesday", "is_deleted": 0}' \</code><br>
 <code>https://project2.le-sage.me:8443/schedule</code>
 <br> The id is serial, so don't worry about specifiying one for the new entry (MySql will do it for you).<br>
-<br>For SELECT, there are a few options.<br>
+<br>For SELECT, there are a few options:<br>
 You can <code>curl https://project2.le-sage.me:8443/schedule</code> to see all schedule entries<br>
-Or <code>curl https://project2.le-sage.me:8443/schedule/John/Wednesday</code> to see a specific user's schedule for a specific day<br>
+Or <code>curl https://project2.le-sage.me:8443/schedule/John/Wednesday</code> to see a specific user's schedule for a
+specific day<br>
 And then <code>curl https://project2.le-sage.me:8443/schedule/Wednesday</code> to see schedules for a chosen day<br>
-And lastly, <code>curl https://project2.le-sage.me:8443/schedule/John</code> to see a user's entire schedule<br>
 <br>For UPDATE, here is an example of updating the start and end times for Jane:<br>
 <code>curl --header 'Content-Type: application/json' \</code><br>
 <code>--request PATCH \</code><br>
