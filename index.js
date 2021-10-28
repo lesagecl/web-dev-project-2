@@ -37,25 +37,6 @@ function rowToMemory(row) {
     week_day: row.week_day
   };
 }
-const insertQuery = 'INSERT INTO schedule(id, start_time, end_time, week_day) VALUES (?, ?, ?, ?)';
-const parameters = [1383478, '13:30', '15:00', 'Monday'];
-connection.query(insertQuery, parameters, (error, result) => {
-  if (error) {
-    console.error(error);
-  } else {
-    console.log(result);
-  }
-});
-
-const selectQuery = 'SELECT * FROM schedule';
-connection.query(selectQuery, (error, rows) => {
-  if (error) {
-    console.error(error);
-  } else {
-    const schedule = rows.map(rowToMemory);
-    console.log(schedule);
-  }
-});
 
 /* SELECT ENDPOINTS */
 
@@ -154,7 +135,7 @@ service.get('/report.html', (request, response) => {
 
 // create a new schedule entry
 service.post('/schedule', (request, response) => {
-  if (request.body.hasOwnProperty('id') && // error
+  if (request.body.hasOwnProperty('id') &&
     request.body.hasOwnProperty('start_time') &&
     request.body.hasOwnProperty('end_time') &&
     request.body.hasOwnProperty('week_day')) {
@@ -242,5 +223,3 @@ service.delete('/schedule/:id/:week_day', (request, response) => {
     }
   });
 });
-
-// connection.end();
