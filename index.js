@@ -1,5 +1,6 @@
 const express = require('express');
 const service = express();
+service.use(express.json());
 
 const port = 5001;
 service.listen(port, () => {
