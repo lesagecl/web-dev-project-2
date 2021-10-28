@@ -32,6 +32,7 @@ connection.connect(error => {
 function rowToMemory(row) {
   return {
     id: row.id,
+    user: row.user,
     start_time: row.start_time,
     end_time: row.end_time,
     week_day: row.week_day,
@@ -82,10 +83,10 @@ service.get('/schedule/:week_day', (request, response) => {
   });
 });
 
-// get schedule for a certain id
-service.get('/schedule/:id', (request, response) => {
-  const parameter = [parseInt(request.params.id)];
-  const query = 'SELECT * FROM schedule WHERE id = ? AND is_deleted = 0';
+// get schedule for a certain user
+service.get('/schedule/:user', (request, response) => {
+  const parameter = [request.params.user];
+  const query = 'SELECT * FROM schedule WHERE user = ? AND is_deleted = 0';
   connection.query(query, parameter, (error, rows) => {
     if (error) {
       response.status(500);
@@ -103,13 +104,13 @@ service.get('/schedule/:id', (request, response) => {
   });
 });
 
-// get schedule for a certain id and day
-service.get('/schedule/:id/:week_day', (request, response) => {
+// get schedule for a certain user and day
+service.get('/schedule/:user/:week_day', (request, response) => {
   const parameters = [
-    parseInt(request.params.id),
+    request.params.user,
     request.params.week_day
   ];
-  const query = 'SELECT * FROM schedule WHERE id = ? AND week_day = ? AND is_deleted = 0';
+  const query = 'SELECT * FROM schedule WHERE user = ? AND week_day = ? AND is_deleted = 0';
   connection.query(query, parameters, (error, rows) => {
     if (error) {
       response.status(500);
@@ -136,18 +137,20 @@ service.get('/report.html', (request, response) => {
 
 // create a new schedule entry
 service.post('/schedule', (request, response) => {
-  if (request.body.hasOwnProperty('id') &&
+  if (request.body.hasOwnProperty('user') &&
     request.body.hasOwnProperty('start_time') &&
     request.body.hasOwnProperty('end_time') &&
-    request.body.hasOwnProperty('week_day')) {
+    request.body.hasOwnProperty('week_day') &&
+    request.body.hasOwnProperty('is_deleted')) {
 
     const parameters = [
-      request.body.id,
+      request.body.user,
       request.body.start_time,
       request.body.end_time,
       request.body.week_day,
+      request.body.is_deleted
     ];
-    const query = 'INSERT INTO schedule(id, start_time, end_time, week_day) VALUES (?, ?, ?, ?)';
+    const query = 'INSERT INTO schedule(user, start_time, end_time, week_day, is_deleted) VALUES (?, ?, ?, ?, ?)';
     connection.query(query, parameters, (error, result) => {
       if (error) {
         response.status(500);
@@ -174,17 +177,16 @@ service.post('/schedule', (request, response) => {
 /* UPDATE ENDPOINTS */
 
 // edit a specific user's schedule for a specific day
-service.patch('/schedule/:id/:week_day', (request, response) => {
+service.patch('/schedule/:user/:week_day', (request, response) => {
   const parameters = [
-    request.body.id,
+    request.body.user,
     request.body.start_time,
     request.body.end_time,
     request.body.week_day,
-    parseInt(request.params.id),
-    request.params.week_day
+    request.body.is_deleted
   ];
 
-  const query = 'UPDATE schedule SET id = ?, start_time = ?, end_time = ?, week_day = ? WHERE id = ? AND week_day = ?';
+  const query = 'UPDATE schedule SET user = ?, start_time = ?, end_time = ?, week_day = ? WHERE user = ? AND week_day = ? AND is_deleted = ?';
   connection.query(query, parameters, (error, result) => {
     if (error) {
       response.status(404);
@@ -203,13 +205,13 @@ service.patch('/schedule/:id/:week_day', (request, response) => {
 /* DELETE ENDPOINTS */
 
 // delete schedule record
-service.delete('/schedule/:id/:week_day', (request, response) => {
+service.delete('/schedule/:user/:week_day', (request, response) => {
   const parameters = [
-    parseInt(request.params.id),
+    request.params.user,
     request.params.week_day
   ];
 
-  const query = 'UPDATE schedule SET is_deleted = 1 WHERE id = ? AND week_day = ?';
+  const query = 'UPDATE schedule SET is_deleted = 1 WHERE user = ? AND week_day = ?';
   connection.query(query, parameters, (error, result) => {
     if (error) {
       response.status(404);
