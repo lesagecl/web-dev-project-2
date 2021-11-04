@@ -34,13 +34,15 @@ This web server has insert, update, patch and delete endpoints. To test my endpo
 You can <code>curl https://project2.le-sage.me:8443/schedule</code> to see all schedule entries<br>
 Or <code>curl https://project2.le-sage.me:8443/schedule/John/Wednesday</code> to see a specific user's schedule for a
 specific day<br>
-And then <code>curl https://project2.le-sage.me:8443/schedule/Wednesday</code> to see schedules for a chosen day<br>
+<code>curl https://project2.le-sage.me:8443/schedule/user/John</code> for a user's schedule<br>
+Similarly, <code>curl https://project2.le-sage.me:8443/schedule/id/1</code> to search via an entry id<br>
+Then lastly, <code>curl https://project2.le-sage.me:8443/schedule/day/Wednesday</code> to see schedules for a chosen day<br>
 <br>For UPDATE, here is an example of updating the start and end times for Jane:<br>
 <code>curl --header 'Content-Type: application/json' \</code><br>
 <code>--request PATCH \</code><br>
 <code>--data '{"first_name": "Jane", "start_time": "8:15", "end_time": "11:00", "week_day": "Tuesday"}' \</code><br>
-<code>https://project2.le-sage.me:8443/schedule/1</code><br>
-Note that the name and weekday are needed to update the schedule.<br>
+<code>https://project2.le-sage.me:8443/schedule/2</code><br>
+Note that the entry id is needed to update the schedule.<br>
 <br>For DELETE, only the schedule entry id should be specified:<br>
 <code>curl --request DELETE \</code><br>
 <code>https://project2.le-sage.me:8443/schedule/1</code>

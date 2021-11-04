@@ -84,7 +84,7 @@ service.get('/schedule/id/:id', (request, response) => {
 });
 
 // get schedule for a given day
-// schedule/day/day
+// schedule/day/:day
 // day_schedule/:day
 service.get('/schedule/day/:week_day', (request, response) => {
   const parameter = [request.params.week_day];
