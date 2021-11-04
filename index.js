@@ -62,6 +62,27 @@ service.get('/schedule', (request, response) => {
   });
 });
 
+// get schedule for a given id
+service.get('/schedule/:id', (request, response) => {
+  const parameter = [request.params.id];
+  const query = 'SELECT * FROM schedule WHERE id = ? AND is_deleted = 0';
+  connection.query(query, parameter, (error, rows) => {
+    if (error) {
+      response.status(500);
+      response.json({
+        ok: false,
+        results: error.message,
+      });
+    } else {
+      const schedule = rows.map(rowToMemory);
+      response.json({
+        ok: true,
+        results: rows.map(rowToMemory),
+      });
+    }
+  });
+});
+
 // get schedule for a given day
 service.get('/schedule/:week_day', (request, response) => {
   const parameter = [request.params.week_day];
@@ -156,12 +177,12 @@ service.post('/schedule', (request, response) => {
         response.status(500);
         response.json({
           ok: false,
-          results: error.message,
+          results: "When inserting, follow the format: {\"first_name\": \"Jane\", \"start_time\": \"8:00\", \"end_time\": \"10:45\", \"week_day\": \"Tuesday\", \"is_deleted\": 0}",
         });
       } else {
         response.json({
           ok: true,
-          results: result.insertId,
+          results: result.insertId + " has been inserted.",
         });
       }
     });
@@ -177,17 +198,16 @@ service.post('/schedule', (request, response) => {
 /* UPDATE ENDPOINTS */
 
 // edit a specific user's schedule for a specific day
-service.patch('/schedule/:first_name/:week_day', (request, response) => {
+service.patch('/schedule/:id', (request, response) => {
   const parameters = [
     request.body.first_name,
     request.body.start_time,
     request.body.end_time,
     request.body.week_day,
-    request.params.first_name,
-    request.params.week_day
+    request.params.id
   ];
 
-  const query = 'UPDATE schedule SET first_name = ?, start_time = ?, end_time = ?, week_day = ? WHERE first_name = ? AND week_day = ? AND is_deleted = 0';
+  const query = 'UPDATE schedule SET first_name = ?, start_time = ?, end_time = ?, week_day = ? WHERE id = ? AND is_deleted = 0';
   connection.query(query, parameters, (error, result) => {
     if (error) {
       response.status(404);
@@ -198,6 +218,7 @@ service.patch('/schedule/:first_name/:week_day', (request, response) => {
     } else {
       response.json({
         ok: true,
+        results: request.body.first_name + "'s schedule has been updated.",
       });
     }
   });
@@ -206,13 +227,12 @@ service.patch('/schedule/:first_name/:week_day', (request, response) => {
 /* DELETE ENDPOINTS */
 
 // delete schedule record
-service.delete('/schedule/:first_name/:week_day', (request, response) => {
+service.delete('/schedule/:id', (request, response) => {
   const parameters = [
-    request.params.first_name,
-    request.params.week_day
+    request.params.id
   ];
 
-  const query = 'UPDATE schedule SET is_deleted = 1 WHERE first_name = ? AND week_day = ?';
+  const query = 'UPDATE schedule SET is_deleted = 1 WHERE id = ?';
   connection.query(query, parameters, (error, result) => {
     if (error) {
       response.status(404);
@@ -223,6 +243,7 @@ service.delete('/schedule/:first_name/:week_day', (request, response) => {
     } else {
       response.json({
         ok: true,
+        result: "Schedule with id: " + request.params.id + " has been deleted.",
       });
     }
   });

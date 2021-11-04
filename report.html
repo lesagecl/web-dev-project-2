@@ -39,10 +39,10 @@ And then <code>curl https://project2.le-sage.me:8443/schedule/Wednesday</code> t
 <code>curl --header 'Content-Type: application/json' \</code><br>
 <code>--request PATCH \</code><br>
 <code>--data '{"first_name": "Jane", "start_time": "8:15", "end_time": "11:00", "week_day": "Tuesday"}' \</code><br>
-<code>https://project2.le-sage.me:8443/schedule/Jane/Tuesday</code><br>
+<code>https://project2.le-sage.me:8443/schedule/1</code><br>
 Note that the name and weekday are needed to update the schedule.<br>
-<br>For DELETE, the name and weekday should once again be specified:<br>
+<br>For DELETE, only the schedule entry id should be specified:<br>
 <code>curl --request DELETE \</code><br>
-<code>https://project2.le-sage.me:8443/schedule/Jane/Tuesday</code>
+<code>https://project2.le-sage.me:8443/schedule/1</code>
 
 </html>
