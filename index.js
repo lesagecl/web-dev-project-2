@@ -63,7 +63,7 @@ service.get('/schedule', (request, response) => {
 });
 
 // get schedule for a given id
-service.get('/schedule/:id', (request, response) => {
+service.get('/schedule/id/:id', (request, response) => {
   const parameter = [request.params.id];
   const query = 'SELECT * FROM schedule WHERE id = ? AND is_deleted = 0';
   connection.query(query, parameter, (error, rows) => {
@@ -84,7 +84,9 @@ service.get('/schedule/:id', (request, response) => {
 });
 
 // get schedule for a given day
-service.get('/schedule/:week_day', (request, response) => {
+// schedule/day/day
+// day_schedule/:day
+service.get('/schedule/day/:week_day', (request, response) => {
   const parameter = [request.params.week_day];
   const query = 'SELECT * FROM schedule WHERE week_day = ? AND is_deleted = 0';
   connection.query(query, parameter, (error, rows) => {
@@ -105,7 +107,7 @@ service.get('/schedule/:week_day', (request, response) => {
 });
 
 // get schedule for a certain user
-service.get('/schedule/:first_name', (request, response) => {
+service.get('/schedule/user/:first_name', (request, response) => {
   const parameter = [request.params.first_name];
   const query = 'SELECT * FROM schedule WHERE first_name = ? AND is_deleted = 0';
   connection.query(query, parameter, (error, rows) => {
@@ -213,7 +215,7 @@ service.patch('/schedule/:id', (request, response) => {
       response.status(404);
       response.json({
         ok: false,
-        results: error.message,
+        results: "Failed to update: entry not found.",
       });
     } else {
       response.json({
@@ -238,7 +240,7 @@ service.delete('/schedule/:id', (request, response) => {
       response.status(404);
       response.json({
         ok: false,
-        results: error.message,
+        results: "Failed to delete: entry not found.",
       });
     } else {
       response.json({
