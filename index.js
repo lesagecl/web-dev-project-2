@@ -7,6 +7,11 @@ service.listen(port, () => {
   console.log(`We're live on port ${port}!`);
 });
 
+service.use((request, response, next) => {
+  response.set('Access-Control-Allow-Origin', '*');
+  next();
+});
+
 // permissions
 service.options('*', (request, response) => {
   response.set('Access-Control-Allow-Headers', 'Content-Type');
