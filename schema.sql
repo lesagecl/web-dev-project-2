@@ -9,4 +9,6 @@ CREATE TABLE schedule (
     is_deleted INT DEFAULT 0
 );
 
-INSERT INTO schedule (first_name, start_time, end_time, week_day, is_deleted) VALUES ('John', '14:00', '17:30', 'Wednesday', 0);
+INSERT INTO schedule (first_name, start_time, end_time, week_day, is_deleted) VALUES ('John', '14:00', '17:00', 'Wednesday', 0);
+INSERT INTO schedule (first_name, start_time, end_time, week_day, is_deleted) VALUES ('John', '14:00', '17:00', 'Monday', 0);
+INSERT INTO schedule (first_name, start_time, end_time, week_day, is_deleted) VALUES ('John', '10:00', '13:00', 'Friday', 0);
