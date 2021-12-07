@@ -168,23 +168,24 @@ service.post('/schedule', (request, response) => {
   if (request.body.hasOwnProperty('first_name') &&
     request.body.hasOwnProperty('start_time') &&
     request.body.hasOwnProperty('end_time') &&
-    request.body.hasOwnProperty('week_day') &&
-    request.body.hasOwnProperty('is_deleted')) {
+    request.body.hasOwnProperty('week_day')
+    // && request.body.hasOwnProperty('is_deleted')
+    ){
 
     const parameters = [
       request.body.first_name,
       request.body.start_time,
       request.body.end_time,
       request.body.week_day,
-      request.body.is_deleted
+      // request.body.is_deleted
     ];
-    const query = 'INSERT INTO schedule(first_name, start_time, end_time, week_day, is_deleted) VALUES (?, ?, ?, ?, ?)';
+    const query = 'INSERT INTO schedule(first_name, start_time, end_time, week_day) VALUES (?, ?, ?, ?)';
     connection.query(query, parameters, (error, result) => {
       if (error) {
         response.status(500);
         response.json({
           ok: false,
-          results: "When inserting, follow the format: {\"first_name\": \"Jane\", \"start_time\": \"8:00\", \"end_time\": \"10:45\", \"week_day\": \"Tuesday\", \"is_deleted\": 0}",
+          results: "When inserting, follow the format: {\"first_name\": \"Jane\", \"start_time\": \"8:00\", \"end_time\": \"10:45\", \"week_day\": \"Tuesday\"}",
         });
       } else {
         response.json({
