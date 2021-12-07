@@ -237,10 +237,10 @@ service.patch('/schedule/:id', (request, response) => {
 // delete schedule record
 service.delete('/schedule/delete/:first_name/:start_time/:end_time/:week_day', (request, response) => {
   const parameters = [
-    request.body.first_name,
-    request.body.start_time,
-    request.body.end_time,
-    request.body.week_day,
+    request.params.first_name,
+    request.params.start_time,
+    request.params.end_time,
+    request.params.week_day,
   ];
 
   const query = 'UPDATE schedule SET is_deleted = 1 WHERE first_name = ?, start_time = ?, end_time = ? AND week_day = ?';
