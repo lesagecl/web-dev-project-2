@@ -243,7 +243,7 @@ service.delete('/schedule/delete/:first_name/:week_day', (request, response) => 
     request.body.week_day,
   ];
 
-  const query = 'UPDATE schedule SET is_deleted = 1 WHERE first_name = ?, start_time = ?, end_time = ?, week_day = ?';
+  const query = 'UPDATE schedule SET is_deleted = 1 WHERE first_name = ?, start_time = ?, end_time = ? AND week_day = ?';
   connection.query(query, parameters, (error, result) => {
     if (error) {
       response.status(404);
