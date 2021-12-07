@@ -235,7 +235,7 @@ service.patch('/schedule/:id', (request, response) => {
 /* DELETE ENDPOINTS */
 
 // delete schedule record
-service.delete('/schedule/delete/:first_name/:week_day', (request, response) => {
+service.delete('/schedule/delete/:first_name/:start_time/:end_time/:week_day', (request, response) => {
   const parameters = [
     request.body.first_name,
     request.body.start_time,
