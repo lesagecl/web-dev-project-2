@@ -3,9 +3,9 @@ DROP TABLE IF EXISTS schedule;
 CREATE TABLE schedule (
     id SERIAL PRIMARY KEY,
     first_name VARCHAR(10),
-    start_time VARCHAR(10),
+    start_time INT,
     end_time INT,
-    week_day INT,
+    week_day VARCHAR(10),
     is_deleted INT DEFAULT 0
 );
 
