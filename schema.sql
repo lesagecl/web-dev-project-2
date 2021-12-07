@@ -12,3 +12,5 @@ CREATE TABLE schedule (
 INSERT INTO schedule (first_name, start_time, end_time, week_day, is_deleted) VALUES ('John', 2, 4, 'Wednesday', 0);
 INSERT INTO schedule (first_name, start_time, end_time, week_day, is_deleted) VALUES ('John', 7, 11, 'Monday', 0);
 INSERT INTO schedule (first_name, start_time, end_time, week_day, is_deleted) VALUES ('John', 1, 4, 'Friday', 0);
+INSERT INTO schedule (first_name, start_time, end_time, week_day, is_deleted) VALUES ('Jane', 0, 3, 'Thursday', 0);
+INSERT INTO schedule (first_name, start_time, end_time, week_day, is_deleted) VALUES ('Jane', 6, 12, 'Thursday', 0);
